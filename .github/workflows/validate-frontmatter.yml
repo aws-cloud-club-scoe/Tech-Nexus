@@ -1,0 +1,66 @@
+name: Validate article frontmatter
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+
+      - name: Validate frontmatter
+        run: |
+          python - <<'PY'
+          import sys, pathlib
+          try:
+              import yaml
+          except Exception as e:
+              print('Missing dependency pyyaml:', e)
+              sys.exit(2)
+
+          errs = []
+          skip_prefixes = ('TEMPLATES/', '.github/')
+          skip_files = ('README.md', 'CONTRIBUTING.md')
+
+          for p in pathlib.Path('.').rglob('*.md'):
+              s = str(p).lstrip('./')
+              if any(s.startswith(pref) for pref in skip_prefixes) or s in skip_files:
+                  continue
+              text = p.read_text(encoding='utf-8')
+              if not text.startswith('---'):
+                  errs.append(f"{s}: missing frontmatter start '---'")
+                  continue
+              parts = text.split('---', 2)
+              if len(parts) < 3:
+                  errs.append(f"{s}: malformed frontmatter (no closing '---')")
+                  continue
+              fm_text = parts[1]
+              try:
+                  fm = yaml.safe_load(fm_text) or {}
+              except Exception as e:
+                  errs.append(f"{s}: yaml parse error: {e}")
+                  continue
+              for key in ('title', 'category', 'last_updated'):
+                  if key not in fm or fm.get(key) in (None, ''):
+                      errs.append(f"{s}: missing required frontmatter '{key}'")
+
+          if errs:
+              print('\n'.join(errs))
+              sys.exit(1)
+          print('All checked markdown files contain required frontmatter.')
+          PY
