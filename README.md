@@ -143,15 +143,5 @@ Licensing and attribution
 Code of conduct
 - Be respectful, constructive, and inclusive in discussions and contributions. Report concerns by opening an issue and tagging a maintainer.
 
-Site theme and styling
-- The site uses a warm, accessible Jekyll theme to improve readability and visual appeal.
-- Styling overrides are in `assets/css/style.scss`. To propose design changes, open a PR and include visual examples.
-
 ---
-
-If you'd like, I can help with:
-- polishing article frontmatter for older files,
-- adding PR checks for date format and tag validation,
-- or creating a simple contributor checklist file to include in PR templates.
-
 
