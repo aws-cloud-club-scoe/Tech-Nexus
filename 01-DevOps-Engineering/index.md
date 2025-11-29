@@ -1,3 +1,9 @@
+---
+title: "DevOps & SRE"
+category: "DevOps"
+last_updated: 2025-11-29
+---
+
 # DevOps & SRE
 
 This folder contains articles and guides about CI/CD, Kubernetes, Docker, Terraform, Observability, and SRE practices.

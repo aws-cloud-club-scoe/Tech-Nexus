@@ -1,3 +1,9 @@
+---
+title: "Web Development"
+category: "Web Development"
+last_updated: 2025-11-29
+---
+
 # Web Development
 
 This folder contains articles on frontend, backend, performance, accessibility, developer tools and web security.

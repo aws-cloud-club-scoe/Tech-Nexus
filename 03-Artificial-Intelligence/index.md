@@ -1,3 +1,9 @@
+---
+title: "Artificial Intelligence & ML"
+category: "AI/ML"
+last_updated: 2025-11-29
+---
+
 # Artificial Intelligence & ML
 
 This folder contains guides on GenAI, MLOps, Data Engineering, Computer Vision, NLP, and Model deployment.

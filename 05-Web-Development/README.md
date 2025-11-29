@@ -1,3 +1,9 @@
+---
+title: "Web Development"
+category: "Web Development"
+last_updated: 2025-11-29
+---
+
 # 05-Web-Development
 
 This folder contains articles, guides, and resources for the "05-Web-Development" domain.

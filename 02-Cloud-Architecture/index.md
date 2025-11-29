@@ -1,3 +1,9 @@
+---
+title: "Cloud Architecture"
+category: "Cloud"
+last_updated: 2025-11-29
+---
+
 # Cloud Architecture
 
 This folder contains multi-cloud architecture articles (AWS/Azure/GCP), Serverless patterns, Cost optimization, and Cloud security guides.

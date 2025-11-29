@@ -1,3 +1,9 @@
+---
+title: "Trends & Analysis"
+category: "Trends"
+last_updated: 2025-11-29
+---
+
 # Trends & Analysis
 
 This folder contains forward-looking research and industry reports such as Web3, Edge computing, Quantum, and analysis pieces.
