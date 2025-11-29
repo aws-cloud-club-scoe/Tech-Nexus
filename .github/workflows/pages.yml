@@ -64,11 +64,24 @@ jobs:
             done
           done
 
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+
+      - name: Install Bundler and Gems
+        run: |
+          gem install bundler --no-document
+          bundle config set deployment 'false' || true
+          bundle install --jobs 4 --retry 3
+
+      - name: Build Jekyll site
+        run: |
+          bundle exec jekyll build --destination _site
+
       - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v1
         with:
-          path: |
-            README.md
-            .
+          path: _site
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1

@@ -1,0 +1,10 @@
+title: Tech-Nexus
+description: A curated knowledge hub for DevOps, Cloud, AI/ML, Cybersecurity, and emerging tech.
+remote_theme: pages-themes/minimal
+plugins:
+  - jekyll-remote-theme
+
+# Keep permalinks simple
+permalink: /:path/
+
+markdown: kramdown
