@@ -17,9 +17,52 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare site (no build required)
+      - name: Generate index pages for each domain
         run: |
-          echo "Preparing static site for Pages"
+          set -euo pipefail
+          echo "Generating index.md for top-level domains"
+          TOP_DIRS=(
+            "01-DevOps-Engineering"
+            "02-Cloud-Architecture"
+            "03-Artificial-Intelligence"
+            "04-Cybersecurity"
+            "05-Web-Development"
+            "99-Trends-and-Analysis"
+          )
+
+          for d in "${TOP_DIRS[@]}"; do
+            if [ ! -d "$d" ]; then
+              echo "Warning: directory $d not present in repo; skipping"
+              continue
+            fi
+
+            out="$d/index.md"
+            title=$(echo "$d" | sed -E 's/^[0-9]+-//; s/-/ /g')
+            echo "# $title" > "$out"
+            echo "" >> "$out"
+            echo "This page lists articles and subfolders for the $title domain." >> "$out"
+            echo "" >> "$out"
+
+            # List subfolders and articles grouped by subfolder
+            for sub in "$d"/*/; do
+              [ -d "$sub" ] || continue
+              subname=$(basename "$sub")
+              echo "### $subname" >> "$out"
+              # list markdown files under this subfolder (exclude index.md)
+              find "$sub" -maxdepth 1 -type f -name '*.md' ! -name 'index.md' | sort | while read -r f; do
+                rel=$(realpath --relative-to="$PWD" "$f")
+                # extract title from frontmatter if available, else filename
+                title_line=$(sed -n '1,30p' "$f" | sed -n 's/^title:[[:space:]]*"\?\(.*\)"\?$/\1/p' | head -n1 || true)
+                if [ -n "$title_line" ]; then
+                  linktext="$title_line"
+                else
+                  linktext=$(basename "$f" .md)
+                fi
+                echo "- [${linktext}](${rel})" >> "$out"
+              done
+              echo "" >> "$out"
+            done
+          done
 
       - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v1
@@ -27,6 +70,5 @@ jobs:
           path: |
             README.md
             .
-
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
